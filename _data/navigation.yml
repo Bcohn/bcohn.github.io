@@ -1,0 +1,13 @@
+# Site navigation links
+
+- title: About
+  url: /about/
+
+- title: Posts
+  url: /posts/
+
+- title: Code
+  url: https://github.com/Bcohn
+
+- title: Class
+  url: syllabus.html
