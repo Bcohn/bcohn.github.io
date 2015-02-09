@@ -1,23 +1,14 @@
 ---
 layout: page
-title: About the Theme
-tags: [about, Jekyll, theme, responsive]
+title: About Brent Cohn
+tags: [about, Brent, contact, interests]
 modified: 2014-08-08T20:53:07.573882-04:00
 comments: true
 image:
   feature: FinalBackground2.png
 ---
 
-Minimal Mistakes is responsive Jekyll theme with large featured images and solid typography. As the name implies the styling is fairly minimal to make it easier for you to build on top of.
 
-## Minimal Mistakes is all about:
-
-* Responsive templates. Looking good on mobile, tablet, and desktop.
-* Gracefully degrading in older browsers. Compatible with Internet Explorer 8+ and all modern browsers. 
-* Minimal embellishments -- content first.
-* Optional large feature images for posts and pages.
-* Simple and clear permalink structure.
-* [Custom 404 page](http://mmistakes.github.io/minimal-mistakes/404.html) to get you started.
-* Support for Disqus Comments
-
-<a markdown="0" href="{{ site.url }}/theme-setup" class="btn">Install Minimal Mistakes Theme</a>
+Welcome to my page! I live in Somerville, Massachusets, and I work as a research assistant for [Dr. Ziad Obermeyer](http://www.iq.harvard.edu/people/ziad-obermeyer). In the past I have worked at [GNS Healthcare](http://www.gnshealthcare.com/), a machine learning start up, and at [RTI International](http://www.rti.org/), a not for profit research firm. In the fall of 2014 I taught a [class](http://bco.hn/syllabus.html) on data analysis in healthcare at Tufts University.
+<br><br>
+I am interested in applying predictive analytics to solve public policy problems, and I am generally passionate about machine learning, applied statistics, econometrics, and programming. If you would like to collaborate on an interesting project, or just get in touch, I can be reached at brentjoseph@gmail.com   
