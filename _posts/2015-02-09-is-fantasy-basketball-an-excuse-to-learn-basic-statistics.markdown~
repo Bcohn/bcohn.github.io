@@ -4,8 +4,6 @@ title: "Is Fantasy Basketball an Excuse to Learn Basic Statistics?"
 date: 2015-02-09T15:54:23-05:00
 ---
 
-# Introduction
-
 The purpose of this series of posts is to explore basic statistics and introductory statistcal programming using  R in the context of a fantasy basketball league. In this blog post I'll give an overview of the league I play in, cover how I acquired the data to analyze, and show how simple descriptive statistics can explain relationships between scoring categories. 
 
 ## The League

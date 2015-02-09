@@ -44,7 +44,7 @@ dim(RawBballData)
 
 [`dim()`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/dim.html) outputs two numbers, first the rows, and then the columns of a matrix, array, or data.frame (some of R's [datatypes](http://adv-r.had.co.nz/Data-structures.html))
 
-So we can see that we are working with dataset that contains 635 rows and 30 columns. Each row represents a unique player, and each column represents a particular statistic. We only care about the 9 statistics that correspond to scoring categories in my league and the player's name. Let's extract the variables of interest. Note: I do some behind the scenes data manipulation to deal with players who played for multiple teams, the code for this [manipulation](https://github.com/) is documented in full on my github.
+So we can see that we are working with dataset that contains 506 rows and 30 columns. Each row represents a unique player, and each column represents a particular statistic. We only care about the 9 statistics that correspond to scoring categories in my league and the player's name. Let's extract the variables of interest. Note: I do some behind the scenes data manipulation to deal with players who played for multiple teams, the code for this [manipulation](https://github.com/) is documented in full on my github.
 
 {% highlight R %}
 
