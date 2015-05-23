@@ -1,0 +1,114 @@
+
+<!doctype html>
+<html lang="en">	
+<head>
+	<meta charset="utf-8">
+	<title>Reveal.js 3 Slide Demo</title>
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/solarized.css" id="theme">	
+	<!--Add support for earlier versions of Internet Explorer -->
+	<!--[if lt IE 9]>
+	<script src="lib/js/html5shiv.js"></script>
+	<![endif]-->
+	<style>
+	#para1:hover {
+    font-size: 150%;
+    color: red;
+}
+	</style>
+</head>
+ 
+<body>
+	<!-- Wrap the entire slide show in a div using the "reveal" class. -->
+	<div class="reveal">
+		<!-- Wrap all slides in a single "slides" class -->
+		<div class="slides">
+ 
+			<!-- ALL SLIDES GO HERE -->
+			<!-- Each section element contains an individual slide -->
+			<section>
+
+				<h2> Alina</h1>
+				<h5> and </h5>
+				<h2> Brent </h2>
+				<h3> Learn Math, Programming, and other cool stuff. </h3>
+				<p><center><font size="6"> A Choose Your Own Adventure Presentation</font></center></p>
+				<p id="para1"><blink> Press &#8594 to begin</blink> </p>
+			</section>
+ 
+			<section>
+    <span class="fragment fade-in">
+        <h1 class="fragment fade-out" data-fragment-index="1">Prologue</h1>
+            <p class="fragment fade-in" data-fragment-index="2"> Late, last night Brent lay in bed dreaming in $\mathbb{R}^3$. He woke, suddenly, and thought with a start...</p>
+            <p class="fragment fade-in" data-fragment-index="3"> "What are we going to do tomorrow?".</p></span>
+            <p class="fragment fade-in" data-fragment-index="4">Being pretty tired, and, in general, not a player of games, Brent decided... </p></section>
+			<section>
+        <h3 class="fragment grow" data-fragment-index="1">$To \;  let \;  Ali\vec{n}a  \; decide$</h3>
+			</section>
+			<section>
+			<section>
+        	<p class="fragment fade-in" data-fragment-index="1"> Do we work on <b>math</b>? ( &#8594)</p>
+        	<p class="fragment fade-in" data-fragment-index="2"> <b>Programming?</b> ( &#8595)</p>
+        	<p class="fragment fade-in" data-fragment-index="3"> or... <b>math and programming</b> ( &#8595 + &#8594)</p>
+        	</section>
+			<section>
+        	<h3>Math</h3>
+        	<h4> Ideas </h4>
+        	<ul>
+        	<li> <a href= "http://web.mit.edu/18.06/www/"> 18.06 </a></li>
+        	<li> <a href ="http://stanford.edu/class/ee364a/"> Stanford Convex Optimization </a></li>
+        	<li><a href="http://statweb.stanford.edu/~tibs/ElemStatLearn/"> Elements of Statistical Learning</a></li>
+        	<li> more? </li>
+        	</ul>
+        	</section>
+        	<section>
+        	<h3>Math & Programming</h3>
+        	<h4> Ideas </h4>
+        	<ul>
+        	<li> <a href= "http://codingthematrix.com/"> Coding the Matrix: Linear Algebra and Python </a></li>
+        	<li> <a href ="http://greenteapress.com/thinkstats/"> Think Stats! Stats in Python </a></li>
+        	<li><a href="http://shop.oreilly.com/product/0636920023784.do"> Python for Data Analysis</a></li>
+        	<li> more? </li>
+        	</ul>
+			</section>
+			</section>
+			<section>
+        	<h3>Programming</h3>
+        	<h4> Ideas </h4>
+        	<ul>
+        	<li> <a href= "http://www.greenteapress.com/thinkpython/"> Think Python </a></li>
+        	<li> <a href ="http://learnpythonthehardway.org/book/"> Learn Python The Hard Way </a></li>
+        	<li><a href="http://matplotlib.org/users/pyplot_tutorial.html"> Badass Matplotlib tutorials!</a></li>
+        	<li> more? </li>
+        	</ul>
+        	</section>
+        	<section>
+        		<h5> The rest is up to you </h5>
+        	</section>
+        	     	<section>
+        		<h1> END </h1>
+        	</section>
+ 
+			</div>
+	</div>
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+ 
+	<script>
+		// Required, even if empty.
+		Reveal.initialize({
+			transition: "convex",
+
+    math: {
+        mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+        config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+    },
+
+    dependencies: [
+        { src: 'plugin/math/math.js', async: true }
+    ]
+
+		});
+	</script>
+</body>
+</html>
