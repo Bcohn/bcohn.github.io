@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+<title type="text">Brent Cohn</title>
+<generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
+<link rel="self" type="application/atom+xml" href="/feed.xml" />
+<link rel="alternate" type="text/html" href="" />
+<updated>2015-02-09T18:04:02-05:00</updated>
+<id>/</id>
+<author>
+  <name>Brent Cohn</name>
+  <uri>/</uri>
+  <email>brentjoseph@gmail.com</email>
+</author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Is Fantasy Basketball an Excuse to Learn Basic Statistics?]]></title>
+  <link rel="alternate" type="text/html" href="/is-fantasy-basketball-an-excuse-to-learn-basic-statistics/" />
+  <id>/is-fantasy-basketball-an-excuse-to-learn-basic-statistics</id>
+  <published>2015-02-09T15:54:23-05:00</published>
+  <updated>2015-02-09T15:54:23-05:00</updated>
+  <author>
+    <name>Brent Cohn</name>
+    <uri></uri>
+    <email>brentjoseph@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;The purpose of this series of posts is to explore basic statistics and introductory statistcal programming using  R in the context of a fantasy basketball league. In this blog post I’ll give an overview of the league I play in, cover how I acquired the data to analyze, and show how simple descriptive statistics can explain relationships between scoring categories. &lt;/p&gt;
+
+&lt;h2 id=&quot;the-league&quot;&gt;The League&lt;/h2&gt;
+
+&lt;p&gt;I play in a &lt;a href=&quot;http://basketball.fantasysports.yahoo.com/nba/177177&quot;&gt;fantasy basketball league&lt;/a&gt;. The league operates in a head-to-head format, with two teams of players squaring off each weak. The winner is determined based on who’s team “wins” the majority of the following nine categories.&lt;/p&gt;
+
+&lt;h3 id=&quot;my-fantasy-leagues-scoring-categories&quot;&gt;My Fantasy League’s Scoring Categories&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Field Goal Percentage (FG.)&lt;/li&gt;
+  &lt;li&gt;Free Throw Percentage (FT.)&lt;/li&gt;
+  &lt;li&gt;Three Point Shots Made (X3P)&lt;/li&gt;
+  &lt;li&gt;Total Points Scored (PTS)&lt;/li&gt;
+  &lt;li&gt;Total Rebounds (TRB)&lt;/li&gt;
+  &lt;li&gt;Total Assists (AST)&lt;/li&gt;
+  &lt;li&gt;Total Steals (STL)&lt;/li&gt;
+  &lt;li&gt;Total Blocks (BLK)&lt;/li&gt;
+  &lt;li&gt;Total Turnovers (TOV). &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In each of the categories, except for turnovers, a higher number is better, and the person who ‘wins’ five or more of the categories wins that week’s game. Winning each category counts as one point, whether you have 1 or 1,000 more steals (or blocks, or assists) than your opponent. Futhermore, several of these categories are obviously related, for instance, Total Points Scored must be at least three times greater than Three Point Shots Made, and players who make lots of three tend to score lots of points. This seems (and is) obvious, but let’s see what sort of more complicated relationships we can discover with &lt;em&gt;data&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;data-acquisition&quot;&gt;Data Acquisition&lt;/h1&gt;
+
+&lt;p&gt;For this post I decided to use statistics from the last complete (2013-2014) basketball season. I gathered the statistics from &lt;a href=&quot;http://www.basketball-reference.com/&quot;&gt;basketball reference&lt;/a&gt;. I exported the statiscs from &lt;a href=&quot;http://www.basketball-reference.com/leagues/NBA_2014_totals.html&quot;&gt;this&lt;/a&gt; webpage as a .csv file.&lt;/p&gt;
+
+&lt;p&gt;First I load the .csv file into R, and use the &lt;code&gt;dim()&lt;/code&gt; command to see the size of the data:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;RawBballData&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;read.csv&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;~/BasketballData/leagues_NBA_2014_totals_totals.csv&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;stringsAsFactors&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;kp&quot;&gt;dim&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;RawBballData&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+	&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;506&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;30&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://stat.ethz.ch/R-manual/R-devel/library/base/html/dim.html&quot;&gt;&lt;code&gt;dim()&lt;/code&gt;&lt;/a&gt; outputs two numbers, first the rows, and then the columns of a matrix, array, or data.frame (some of R’s &lt;a href=&quot;http://adv-r.had.co.nz/Data-structures.html&quot;&gt;datatypes&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;So we can see that we are working with dataset that contains 635 rows and 30 columns. Each row represents a unique player, and each column represents a particular statistic. We only care about the 9 statistics that correspond to scoring categories in my league and the player’s name. Let’s extract the variables of interest. Note: I do some behind the scenes data manipulation to deal with players who played for multiple teams, the code for this &lt;a href=&quot;https://github.com/&quot;&gt;manipulation&lt;/a&gt; is documented in full on my github.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;RawBballData&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;names&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;RawBballData&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+ &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Rk&amp;quot;&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;quot;Player&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Pos&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;Age&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;Tm&amp;quot;&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;quot;G&amp;quot;&lt;/span&gt;      &lt;span class=&quot;s&quot;&gt;&amp;quot;GS&amp;quot;&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;quot;MP&amp;quot;&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;quot;FG&amp;quot;&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;quot;FGA&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;FG.&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;X3P&amp;quot;&lt;/span&gt;   
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;13&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;X3PA&amp;quot;&lt;/span&gt;   &lt;span class=&quot;s&quot;&gt;&amp;quot;X3P.1&amp;quot;&lt;/span&gt;  &lt;span class=&quot;s&quot;&gt;&amp;quot;X2P&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;X2PA&amp;quot;&lt;/span&gt;   &lt;span class=&quot;s&quot;&gt;&amp;quot;X2P.1&amp;quot;&lt;/span&gt;  &lt;span class=&quot;s&quot;&gt;&amp;quot;eFG.&amp;quot;&lt;/span&gt;   &lt;span class=&quot;s&quot;&gt;&amp;quot;FT&amp;quot;&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;quot;FTA&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;FT.&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;ORB&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;DRB&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;TRB&amp;quot;&lt;/span&gt;   
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;AST&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;STL&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;BLK&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;TOV&amp;quot;&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;&amp;quot;PF&amp;quot;&lt;/span&gt;     &lt;span class=&quot;s&quot;&gt;&amp;quot;PTS&amp;quot;&lt;/span&gt;   
+
+scoringCategories&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Player&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;PTS&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;TOV&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;BLK&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;STL&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;AST&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;TRB&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;FT.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;FG.&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;X3P&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+BballData&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;RawBballData&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;scoringCategories&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can see what the first lines of our data look like by using the &lt;code&gt;head()&lt;/code&gt; command. &lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;kp&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;BballData&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Player&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;PTS&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;TOV&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;BLK&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;STL&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;AST&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;TRB&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;FT.&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;FG.&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;X3P&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;A.J. Price&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;44&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;7&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;13&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.000&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.413&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;6&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Aaron Brooks&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;645&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;117&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;13&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;52&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;233&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;140&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.874&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.401&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;96&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Aaron Gray&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;65&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;31&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;8&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;10&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;22&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;111&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.550&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.443&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Adonis Thomas&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;14&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1.000&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.429&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Al Harrington&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;225&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;34&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;14&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;28&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;80&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.771&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.396&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;34&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Al Horford&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;538&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;64&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;44&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;27&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;76&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;244&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.682&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;.567&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;4&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;A.J. Price, Adonis Thomis, and Al Harrington all had as many blocks as I did! Maybe someday I’ll be an NBA player too. &lt;/p&gt;
+
+&lt;figure&gt;
+	&lt;img src=&quot;/images/BlogPic.png&quot; /&gt;
+	&lt;figcaption&gt;NBA Stat Correlations&lt;/figcaption&gt;
+
+&lt;/figure&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/is-fantasy-basketball-an-excuse-to-learn-basic-statistics/&quot;&gt;Is Fantasy Basketball an Excuse to Learn Basic Statistics?&lt;/a&gt; was originally published by Brent Cohn at &lt;a href=&quot;&quot;&gt;Brent Cohn&lt;/a&gt; on February 09, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+</feed>
