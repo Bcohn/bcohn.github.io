@@ -1,0 +1,87 @@
+<ition()
+      .duration(750*(iterator/2));
+
+
+  var text2 = q.selectAll("text")
+      .data(data)
+      .enter()
+      .append("text")
+      .attr("dy", ".35em")
+      .attr("y", -300)
+      .attr("x", function(d) { return (d.position+1) * 32; })
+      .style("fill-opacity", 1e-6)
+      .text(function(d) {return d.letter; })
+      .transition(t)
+      .attr("y", counter)
+      .style("fill-opacity", 1)
+
+
+  var timer=0;
+  var t = d3.timer(function(elapsed) {
+    timer+=1;
+    if(timer % 20 === 0){
+    q.selectAll("text")
+          .data(data)
+          .transition()
+          .duration(500)
+          .attr("x", function(d) {return ((d.position+1)*32 + Math.sin(elapsed)*10); })
+          .attr("y", function(d) {return (+d3.select(this).attr("y")+ Math.random()*Math.sin(elapsed)*5); })
+          .attr("fill", function(d,i) {return (colors(Math.floor(elapsed / 30 + i)))});
+
+  }
+},counter2)
+
+counter2-=1000
+}
+
+function ObjectifyLanguage(words){
+    var wrapper=[]
+    for (var i = 0; i < words.length; ++i){
+        var objectified = {};
+        objectified={"position":i,"letter":words[i]};
+        wrapper.push(objectified);
+      }
+    return wrapper;
+}
+
+
+
+
+function BrentLinker(counter){
+  if(counter=== -150){
+    return "https://www.cs.cornell.edu/home/kleinber/aer15-prediction.pdf";
+  }
+  if(counter=== -100){
+    return "http://bl.ocks.org/bcohn";
+  }
+  if(counter=== -50){
+    return "https://github.com/Bcohn";
+  }
+  if(counter=== -0){
+    return "http://bco.hn/syllabus.html";
+  }
+  else{
+    return "http://stackoverflow.com/users/2498263/bjoseph"
+  }
+}
+
+// The initial display.
+update('Brent puts things here:');
+setTimeout(function() { update("like work stuff"); }, 1000);
+setTimeout(function() { update("cool visualizations"); }, 2500);
+setTimeout(function() { update("code"); }, 4000);
+setTimeout(function() { update("and his class's syllabus"); }, 5500);
+
+// // Grab a random sample of letters from the alphabet, in alphabetical order.
+// d3.interval(function() {
+//   update("Check it out");
+// }, 1500);
+
+// window.setInterval(function(){
+//   /// call your function here
+// }, 1000);
+
+
+</script>
+
+
